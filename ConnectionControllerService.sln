@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32106.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectionControllerService", "ConnectionControllerService.csproj", "{02254160-3058-47B3-91B8-FC8FB5D844FF}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ConnectionControllerServiceSetup", "..\ConnectionControllerServiceSetup\ConnectionControllerServiceSetup.vdproj", "{97D178B4-1190-4FDD-8FF0-BEAE683B4DBD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{02254160-3058-47B3-91B8-FC8FB5D844FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02254160-3058-47B3-91B8-FC8FB5D844FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02254160-3058-47B3-91B8-FC8FB5D844FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02254160-3058-47B3-91B8-FC8FB5D844FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97D178B4-1190-4FDD-8FF0-BEAE683B4DBD}.Debug|Any CPU.ActiveCfg = Debug
+		{97D178B4-1190-4FDD-8FF0-BEAE683B4DBD}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6E094C22-8089-440F-B93D-363378970633}
+	EndGlobalSection
+EndGlobal
