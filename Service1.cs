@@ -20,25 +20,20 @@ namespace ConnectionControllerService
 {
     public partial class Service1 : ServiceBase
     {
-        Timer timer = new Timer(); // name space(using System.Timers;)
-        
+        Timer timer = new Timer(); // name space(using System.Timers;)        
        
         DataTable table = new DataTable();
         public string MachineName = Environment.MachineName;
         public Service1()
         {
             InitializeComponent();
-
         }
-       public int Min = Convert.ToInt32(ConfigurationManager.AppSettings["Min"]);
-
-      
+       public int Min = Convert.ToInt32(ConfigurationManager.AppSettings["Min"]);     
        
         #region servis ayarı
         protected override void OnStart(string[] args)
-        {
-            
-           string zaman = DateTime.Now.ToString("f", CultureInfo.CurrentCulture = new CultureInfo("tr-TR"));
+        {            
+            string zaman = DateTime.Now.ToString("f", CultureInfo.CurrentCulture = new CultureInfo("tr-TR"));
             checkFiles();
             data();
             try { 
@@ -47,9 +42,8 @@ namespace ConnectionControllerService
             timer.Enabled = true;
             timer.AutoReset = true;       
             WriteToFile(zaman + " | ********** SERVİS BAŞLATILDI ********** " );        
-            }
+                }
             catch(Exception ex) { WriteToFile("SERVİS BAŞLATILAMADI. EXCEPTION :" + ex.Message); }
-
             ICMP();            
         }
         protected override void OnStop()
@@ -73,9 +67,7 @@ namespace ConnectionControllerService
             string zaman = DateTime.Now.ToString("f", CultureInfo.CurrentCulture);
             WriteToFile(zaman + " | ********** BAGLANTILAR KONTROL EDİLİYOR **********");
             try { 
-            var ip_list = table.AsEnumerable().Select(s => s.Field<string>("CİHAZ İP"));
-
-          
+            var ip_list = table.AsEnumerable().Select(s => s.Field<string>("CİHAZ İP"));          
                 foreach (var k in ip_list)
                 {
                     Ping pingSender = new Ping();
@@ -117,23 +109,19 @@ namespace ConnectionControllerService
                         {
                             sw.WriteLine(logmes); // içerisine logmes yaz.
                         }
-
-                    } 
-                        
-                    }
-                
-            }
-                }
+                    }                         
+                }                
+             }
+          }
             catch (Exception ex) { WriteToFile("ICMP Fonksiyonu Başlatılamadı. \n Exception : "+ex.Message); }
-            if (z == "1"&& File.Exists(AppDomain.CurrentDomain.BaseDirectory + "mail.txt")) {
-
-                try {                
+            if (z == "1"&& File.Exists(AppDomain.CurrentDomain.BaseDirectory + "mail.txt")) 
+            {
+               try {                
                 
                 Yandex(); }
                 catch(Exception ex) { WriteToFile(zaman+" | !!!!MAIL GÖNDERİLEMEDİ!!! |"+ex.Message); }
                 }
-            else { return; }
-           
+            else { return; }          
             
         }
         #endregion
@@ -173,17 +161,12 @@ namespace ConnectionControllerService
                 string message = ("Config Dosyası Bulunamadı. Servis Başlatılamadı. \n" + AppDomain.CurrentDomain.FriendlyName + ".config" + "  Adında xml config dosyası gerekmektedir. \n huseyinkarayazim@gmail.com 'ile iletişime geçiniz. \n\n ");
                 WriteToFile(message);
             }
-
-
              if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Cihaz_Listesi.txt"))
              {
                  File.Create(AppDomain.CurrentDomain.BaseDirectory + "Cihaz_Listesi.txt").Close();
                  string message = "''Cihaz_Listesi.txt BULUNAMADI !!''\n''Cihaz_Listesi'' ADINDA TEXT DOSYASI OLUŞTURULDU\n " + AppDomain.CurrentDomain.BaseDirectory + "\nREADME.TXT GÖZ ATIN";
-
                  WriteToFile(message + zaman);
-
              }
-
         }
         #endregion
         #region data okuma
@@ -195,22 +178,15 @@ namespace ConnectionControllerService
              table.Columns.Add("CİHAZ İP", typeof(string));     // CIHAZ_IP adında sütun oluşturuldu .
             try { 
             string[] liste = File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + "Cihaz_Listesi.txt"); // Tablo için text dosyası okundu.
-             
             string []values;  // for için değişken tanımlandı.
-            
-
-             for (int i = 0; i < liste.Length; i++) // tablodaki değerler kadar for döngüsü başlatıldı.
+            for (int i = 0; i < liste.Length; i++) // tablodaki değerler kadar for döngüsü başlatıldı.
              { values = liste[i].ToString().Split(c);   // tabloda "/" ile sütunlar ayrıldı .
-
                  string[] row = new string[values.Length];   // sütunları okumak için for döngüsü yapıldı.
                  for (int j = 0; j < values.Length; j++)
                  {
                      row[j] = values[j].Trim();
-
                  }
-
                  table.Rows.Add(row);  // Text deki değerler tabloya aktarıldı.
-
              }
             }
             catch (Exception ex) { WriteToFile("Cihaz_Listesi.txt klasörü boş.\n\n"+ex.Message); }
@@ -223,14 +199,11 @@ namespace ConnectionControllerService
             string pass= ConfigurationManager.AppSettings["PASS"];
             int port=Convert.ToInt32(ConfigurationManager.AppSettings["PORT"]);
             string host= ConfigurationManager.AppSettings["HOST"];
-                       string alıcılar = ConfigurationManager.AppSettings["To"];
+            string alıcılar = ConfigurationManager.AppSettings["To"];
             string tesis = ConfigurationManager.AppSettings["TESIS_ADI"];
             string subject = (tesis + " " + " HABERLEŞME UYARI SERVİSİ ");
-
             string zaman = DateTime.Now.ToString("f", CultureInfo.CurrentCulture);
-             
-             var log = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "mail.txt");
-           
+            var log = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "mail.txt");
              MailMessage error = new MailMessage();
              SmtpClient istemci = new SmtpClient();
              istemci.Port =port;
@@ -241,18 +214,13 @@ namespace ConnectionControllerService
              error.From = new MailAddress(email);
              error.Subject = (subject);
              error.Body = (" \n \n DİKKAT\n\n Sayın Yetkili Aşağıdaki İstasyon / İstasyonlara Bağlantı Sağlanamamaktadır.\n\n \n " + log + " \n\n\n Bu Mail Connection Controller Service İle "+MachineName+" Tarafından  Gönderildi \n\n\n Bir Sonraki Kontrol "+Min+"   Dakika Sonra \n \n \n Tarih : " + zaman+"\n \n \n Daha Fazla Bilgi İçin "+MachineName+"':\'"+ AppDomain.CurrentDomain.BaseDirectory + "README.TXT GÖZ ATIN"+"\n \n Yada 'huseyinkarayazim@gmail.com' ile iletişime geçin. ");
-
              istemci.Send(error);
-             
-
-             File.Delete(AppDomain.CurrentDomain.BaseDirectory + "mail.txt");
-
-         }
+            File.Delete(AppDomain.CurrentDomain.BaseDirectory + "mail.txt");
+          }
         #endregion       
         #region Yandex ile mail gönderme
         public void Yandex()
-        {
-          
+        {          
             string zaman = DateTime.Now.ToString("f", CultureInfo.CurrentCulture = new CultureInfo("tr-TR"));
             var log = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "mail.txt");
             if (log != null)
@@ -263,9 +231,6 @@ namespace ConnectionControllerService
                 string subject = (tesis + " " + " HABERLEŞME UYARI SERVİSİ ");
                 string content = (" \n \n DİKKAT \n\n " + tesis + "\n\n Sayın Yetkili Aşağıdaki İstasyon / İstasyonlara Bağlantı Sağlanamamaktadır.\n\n \n " 
                     + log + " \n\n\n Bu Mail Connection Controller Service İle " + MachineName + " Tarafından  Gönderildi \n\n\n Bir Sonraki Kontrol " +Min+ " Dakika Sonra \n \n \n Tarih : " + zaman + "\n \n \n Daha Fazla Bilgi İçin " + MachineName + "':\'" + AppDomain.CurrentDomain.BaseDirectory + "README.TXT GÖZ ATIN" + "\n \n Yada 'huseyinkarayazim@gmail.com / huseyin.karayazim@triatech.com.tr' ile iletişime geçin.\n\n ");
-
-
-
                 var _host = ConfigurationManager.AppSettings["HOST"];
                 var _port = Convert.ToInt32(ConfigurationManager.AppSettings["PORT"]);
                 var _defaultCredentials = false;
@@ -274,16 +239,13 @@ namespace ConnectionControllerService
                 var _password = ConfigurationManager.AppSettings["PASS"];//Your yandex app password
                 using (var smtpClient = new SmtpClient(_host, _port))
                 {
-
                     smtpClient.EnableSsl = _enableSsl;
                     smtpClient.UseDefaultCredentials = _defaultCredentials;
                     smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-
                     if (_defaultCredentials == false)
                     {
                         smtpClient.Credentials = new NetworkCredential(_emailfrom, _password);
                     }
-
                     smtpClient.Send(_emailfrom, alıcılar, subject, content);
                 }
                 File.Delete(AppDomain.CurrentDomain.BaseDirectory + "mail.txt");
@@ -293,15 +255,3 @@ namespace ConnectionControllerService
         #endregion
     }
 }
-    
-    
-    
-    
-    
-    
-   
-    
-
-
-
-
